@@ -2,7 +2,7 @@ library(tidyverse)
 library(readr)
 rawData<-read_csv('team project/OnlineNewsPopularity/OnlineNewsPopularity.csv')
 
-
+head(rawData)
 ##remove non-predictive variable: url & timedelta
 news<-rawData %>% select(-c(url,timedelta))
 
