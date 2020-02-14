@@ -1,0 +1,114 @@
+---
+title: "assciation_rule"
+author: "Youngjoon Kim"
+date: "2/14/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(arules)
+library(arulesViz)
+library(ggplot2)
+```
+
+###1. lets merge members and groups
+```{r}
+mm = member_c1 %>% select(member_id, group_id) 
+gr = group_c1 %>% select(group_id, category_id, category.name, group_name)
+
+mmgr = inner_join(mm, gr)
+```
+
+###2. association rules
+
+###A. Lets make rules for training data
+
+```{r}
+grpmm_train = mmgr[1:nrow(mmgr)*0.5,] ## train data for 50% of raw data
+grpmm_train = as.data.frame(grpmm_train)
+g4 = split(grpmm_train[,"category.name"], grpmm_train[,"member_id"])  ## puts into a list
+class(g4)
+g4[100]
+tr1 = as(g4, "transactions")
+inspect(head(tr1, 20))
+
+hist(size(tr1))
+itemf1 = itemFrequency(tr1)
+head(sort(itemf1, decreasing = T), 5)
+itemFrequencyPlot(tr1)
+itemFrequencyPlot(tr1, topN=50)
+itemFrequencyPlot(tr1, topN=5, horiz = TRUE)
+head(sort(itemf1, decreasing = T), 5)
+
+rules1 <- apriori(tr1, 
+                 parameter = list(supp = 0.003, 
+                                  conf = 0.2, 
+                                  minlen = 2,
+                                  target = "rules"))
+
+
+summary(rules1)
+
+```
+
+###B. lets print out the first 5 rules
+```{r}
+inspect(head(rules1, 5))
+inspect(head(sort(rules1, decreasing=T, by="count"), 30))
+inspect(head(sort(rules1, decreasing=T, by="support"), 5))
+inspect(head(sort(rules1, decreasing=T, by="lift"), 5))
+inspect(head(sort(rules1, decreasing=T, by="count"), 5))
+```
+
+###C. lets decide parameter for recommender system
+
+```{r}
+# Set of confidence levels
+confidenceLevels = seq(from=0.1, to=0.9, by =0.1)
+# Create empty vector
+rules_sup0005 = NULL
+# Apriori algorithm with a support level of 0.5%
+# Apriori algorithm with a support level of 0.5%
+for (i in 1:length(confidenceLevels)) {
+  rules_sup0005[i] =
+    length(apriori(tr1,
+                   parameter=list(supp=0.005,
+                                  conf=confidenceLevels[i],
+                                  target="rules")))
+}
+
+```
+
+###D. Visualization
+```{r}
+# Number of rules found with a support level of 0.5%
+qplot(confidenceLevels, rules_sup0005,
+      geom=c("point", "line"),xlab="Confidence level",
+      ylab="Number of rules found") +
+  theme_bw()
+
+inspectDT(rules1)
+
+plot(rules1, method = "scatterplot",
+     engine = "html")
+
+plot(rules1, method = "graph",
+     engine = "html")
+
+
+# Top 10 rules with highest confidence
+top10_rules =
+  head(sort(rules1,by = "confidence"), 10)
+inspect(top10_rules)
+# Plot the top 10 rules
+plot(top10_rules,
+     method = "graph", engine = "html")
+
+
+ruleExplorer(rules1)
+```
