@@ -46,16 +46,16 @@ grp_cate %>% ggplot(aes(x=factor(category.name,level=order),fill=state)) +
   #theme(axis.text.x=element_text(angle = 30, hjust = 0)) +
   coord_flip()+
   labs(title ="Popularity of (33) Categories Based on No.of Groups Among 3 States " , x = "Category", y = "Count")
-### Top 5 categories Based on No.of Groups Among 3 States (NY, Chicago and SF)
+### Top 3 categories Based on No.of Groups Among 3 States (NY, Chicago and SF)
 
 grp_cate %>%
   count(category.name,state) %>%
   mutate(category.name = fct_reorder(category.name, n, .desc = TRUE)) %>%
   arrange(desc(n)) %>%
-  head(7)%>%
+  filter(category.name =="tech" |category.name =="career/business"|category.name =="socializing")%>%
   ggplot(aes(x = category.name, y = n, fill=state)) + geom_bar(stat = 'identity')+
   scale_fill_manual(values=c("#ef4566", "#f69a9a", "#f9cdae",'#cbcba9','#83ae9b')) +
-  labs(title ="Top 3 Categories Based on No.of Groups Among 3 States " , x = "Category", y = "Count")
+  labs(title ="Top 3 Categories Based on No.of Groups Among 3 States " , x = "Category", y = "Count")+
   coord_flip()
 
   
