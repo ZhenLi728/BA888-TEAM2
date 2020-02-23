@@ -1,0 +1,65 @@
+---
+title: "Explore Data"
+author: "Hui Jiang, Jenny Hu"
+date: "2/23/2020"
+output: html_document
+---
+
+## Explore Data 2
+
+## plot2：The Number of New Members Over Years Among 3 States  (NY, Chicago, and SF)
+（Jenny has done)
+
+## plot3: The number of New Events Over Years Among 3 States (2016!)
+events <-events %>% 
+  mutate(year_created=factor(year(group.created))) %>% 
+  filter(venue.state == "NY"|venue.state == "IL"|venue.state == "CA"|venue.state == "Il") 
+events$venue.state[events$venue.state=='Il']<-'IL'
+
+events %>% ggplot(aes(x=year_created,fill=venue.state)) +
+  geom_bar(position = 'stack') +
+  scale_fill_manual(values=c("#ef4566", "#f69a9a", "#f9cdae",'#cbcba9','#83ae9b'))+
+  theme(axis.text.x=element_text(angle = 30, hjust = 1))+
+  labs(title ="Number of New Events Over Years Among 3 States " , x = "Year", y = "Number of New Events")
+
+```{r}
+library(data.table)
+events <-event %>% 
+  mutate(year_created=factor(year(group.created))) %>% 
+  filter(venue.state == "NY"|venue.state == "IL"|venue.state == "CA"|venue.state == "Il") 
+events$venue.state[events$venue.state=='Il']<-'IL'
+
+events %>% ggplot(aes(x=year_created,fill=venue.state)) +
+  geom_bar(position = 'stack') +
+  scale_fill_manual(values=c("#ef4566", "#f69a9a", "#f9cdae",'#cbcba9','#83ae9b'))+
+  theme(axis.text.x=element_text(angle = 30, hjust = 1))+
+  labs(title ="Number of New Events Over Years Among 3 States " , x = "Year", y = "Number of New Events")
+```
+When we observed the chart, we found that the data of 2016 events was abnormal, so we searched the Internet and checked relevant information, then we found that there do have some policies might be the reason for its abnormal: First, there is a rapidly decreasing of number of new events happened in 2015 to 2016; then after did some research, these policy change might be the reason of the drop-Canceled basic plan and ultimate plan and Meetup.com closed singles groups worldwide from 2016.
+
+## plot4: Top 3 categories Based on No.of Groups Among 3 States
+(Jenny has done)
+
+## plot5: Popularity Trend of Top 3 Categories Based on No.of Groups Among 3 States
+```{r}
+tmp = group %>% 
+  filter(category.name=='tech'|category.name=='career/business'|category.name=='socializing') %>% 
+  mutate(year_created=factor(year(created)))
+# Plot
+ggplot(tmp, aes(x=year_created,color=category.name,shape=category.name)) + 
+  geom_point(stat='count',size=5)+
+  facet_grid(.~state) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))+
+  labs(title ="Popularity Trend of Top 3 Categories Based on No.of Groups Among 3 States" , x = "Year", y = "Count")
+tmp %>% 
+  select(category.name,year_created,state) %>%
+  count(category.name,state,year_created) %>%
+  ggplot(aes(x = year_created,y =n,color=category.name,shape=category.name, group = category.name))+
+  geom_point()+
+  geom_line() +
+  facet_grid(.~state)+
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))+
+  labs(title ="Popularity Trend of Top 3 Categories Based on No.of Groups Among 3 States" , x = "Year", y = "Count")
+```
+By comparing the three states, the popularity trend of top 3 categories based on the number of groups are career/business, socializing and tech, and their uptrend is very rapid. 
+In the last year of 2016, the tech category in CA had the most groups, while IL and NY were the career. We think the reason is that tech in CA is more popular, while IL and NY are more popular in finance and business.
