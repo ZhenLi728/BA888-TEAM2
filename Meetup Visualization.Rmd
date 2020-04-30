@@ -1,0 +1,113 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r message=FALSE}
+library(readr)
+library(skimr)
+library(ggplot2)
+library(tidyverse)
+library(stringr)
+library(data.table)
+library(lubridate)
+options(scipen=999, digits = 22)
+```
+
+
+```{r}
+event=read_csv('events.csv')
+group_topics=read_csv('groups_topics.csv')
+group=read_csv('Meetup/meetups-data-from-meetupcom/groups.csv')
+member=read_csv('Meetup/meetups-data-from-meetupcom/members.csv')
+```
+
+# "Event" visualization 
+
+## Fee-required events versus free events in different activity topics
+```{r}
+eventFee_topics<-merge(event,group_topics,by='group_id')
+eventFee_topics<-eventFee_topics %>% select('event_id','created','fee.required','group_id','topic_id','topic_name')
+colSums(is.na(eventFee_topics)==1) #no missing value
+eventFee_topics %>% group_by(topic_id,topic_name) %>% count() %>% arrange(topic_id) #topic_name and topic_id is unique matching
+eventFee_topics %>% group_by(topic_name) %>% 
+  mutate(charged_events=sum(fee.required),total_events=n(),charged_event_ratio=charged_events/total_events) -> eventFee_topics
+eventFee_topics %>% mutate(created_year=year(created),charged_event_ratio=round(charged_event_ratio,2))-> eventFee_topics
+View(eventFee_topics)
+eventFee_topics %>% group_by(topic_name,created_year) %>% 
+  summarise(sum_charged=sum(charged_events),sum_total=sum(total_events)) -> eventFee_topics
+write_csv(eventFee_topics,'eventFee_topics.csv')
+```
+
+## Fee-required events versus free events in different activity catagories
+```{r}
+eventFee_categories<-merge(event,group,by='group_id')
+eventFee_categories<-eventFee_categories %>% select('event_id','created.x','fee.required','group_id','category_id','category.name')
+colSums(is.na(eventFee_categories)==1)
+eventFee_categories %>% group_by(category_id) %>% 
+  mutate(charged_events=sum(fee.required),total_events=n(),charged_event_ratio=charged_events/total_events) -> eventFee_categories
+eventFee_categories %>% mutate(created_year=year(created.x),charged_event_ratio=round(charged_event_ratio,2))-> eventFee_categories
+View(eventFee_categories)
+eventFee_categories %>% group_by(category.name,created_year) %>% 
+  summarise(sum_charged=sum(charged_events),sum_total=sum(total_events)) -> eventFee_categories
+write_csv(eventFee_categories,'eventFee_categories.csv')
+```
+## For all fee-required events, average fee each group type 
+```{r}
+event %>% filter(fee.required==1) %>% group_by(group.name) %>% summarise(avg_fee=mean(fee.amount)) %>% arrange(desc(avg_fee))
+```
+## Number of event in each Venue (lon and lat)-->Tableau
+
+# "Group" visualization 
+## Create time: No.of group created each year
+```{r}
+group %>% mutate(created_year=year(created))->group
+#write_csv(group,'group.csv')
+```
+
+## Lat nad lon: number of groups geographically --> Tableau
+
+## Rating: average rating for every category --> Tableau
+
+```{r}
+
+group %>% group_by(created_year) %>% summarise(mean(rating,na.rm = T))  #abnormal low avg rating in 2016 and 2017
+group %>% filter(created_year==2017) %>% select(rating) # a lot of 0 value in rating in 2016 and 2017
+group %>% mutate(rating=ifelse(rating==0,NA,rating)) ->group
+#write_csv(group,'group.csv')
+```
+
+# "Member" visualization 
+## Average (visit-join) time
+```{r}
+member$joined=substr(member$joined,1,str_locate(member$joined,' ')[1])
+member$visited=substr(member$visited,1,str_locate(member$visited,' ')[1])
+member %>% mutate(joined=as.Date(joined,'%m/%d/%y'),visited=as.Date(visited,'%m/%d/%y'))->member
+member %>% mutate(time_to_action=visited-joined)->member
+mean(member$time_to_action)
+```
+
+## Number of groups each member joins (group by member_id)
+```{r}
+n_group=member %>% group_by(member_id) %>% count() 
+member=merge(member,n_group,by='member_id')
+colnames(member)[16]<-"n_group"
+
+```
+
+## New member in Meetup every year (earliest ‘join’ time)
+
+```{r}
+member$join_year=year(member$joined)
+member=member %>% group_by(member_id) %>% mutate(cohort=min(join_year))
+table(member$cohort)
+#write_csv(member,'member.csv')
+```
+
+## Member retention: group by user id and join time(year)
+```{r}
+with(member,table(cohort,join_year))
+```
+
+```{r}
+```
