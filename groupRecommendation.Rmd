@@ -1,0 +1,468 @@
+---
+title: "Group recommendation"
+author: "Youngjoon Kim"
+date: "4/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1. Top 3 Groups prediction When user choose 'social media' as topic
+```{r}
+#1. social media  -> new tech
+gt_c1 %>% filter(topic_key == 'newtech') %>% select(group_id) -> newtech
+
+newtech1 = inner_join(group_c1, newtech) 
+
+
+newtech1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3)-> newtech_ny
+
+newtech1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> newtech_il
+
+newtech1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> newtech_ca
+
+newtech_ny
+newtech_il
+newtech_ca
+
+```
+
+# 2. Top 3 Groups prediction When user choose 'technology' as topic
+```{r}
+#2.technology -> newtech
+newtech_ny
+newtech_il
+newtech_ca
+
+```
+
+# 3. Top 3 Groups prediction When user choose 'recreational-sports' as topic
+```{r}
+#3 recreational-sports -> sports
+gt_c1 %>% filter(topic_key == 'sports') %>% select(group_id) -> sports
+
+sports1 = inner_join(group_c1, sports) 
+
+
+sports1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> sports_ny
+
+sports1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> sports_il
+
+sports1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> sports_ca
+
+sports_ny
+sports_il
+sports_ca
+
+```
+
+# 4. Top 3 Groups prediction When user choose 'recreational-sports' as topic
+```{r}
+#4 recreational-sports -> outdoors
+gt_c1 %>% filter(topic_key == 'outdoors') %>% select(group_id) -> outdoors
+
+outdoors1 = inner_join(group_c1, outdoors) 
+
+
+outdoors1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> outdoors_ny
+
+outdoors1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> outdoors_il
+
+outdoors1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> outdoors_ca
+
+outdoors_ny
+outdoors_il
+outdoors_ca
+
+```
+
+# 5. Top 3 Groups prediction When user choose 'culture-exchange' as topic
+```{r}
+#5 culture-exchange -> language
+gt_c1 %>% filter(topic_key == 'language') %>% select(group_id) -> language
+
+language1 = inner_join(group_c1, language) 
+
+
+language1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> language_ny
+
+language1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> language_il
+
+language1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> language_ca
+
+language_ny
+language_il
+language_ca
+```
+
+# 6. Top 3 Groups prediction When user choose 'mobile-technology' as topic
+```{r}
+#6 mobile-technology -> newtech
+newtech_ny
+newtech_il
+newtech_ca
+```
+
+# 7. Top 3 Groups prediction When user choose 'digcam' as topic
+```{r}
+#7 digcam -> photo
+gt_c1 %>% filter(topic_key == 'photo') %>% select(group_id) -> photo
+
+photo1 = inner_join(group_c1, photo) 
+
+
+photo1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> photo_ny
+
+photo1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> photo_il
+
+photo1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> photo_ca
+
+photo_ny
+photo_il
+photo_ca
+
+```
+
+# 8. Top 3 Groups prediction When user choose 'web' as topic
+```{r}
+#8 web -> newtech
+newtech_ny
+newtech_il
+newtech_ca
+```
+
+# 9. Top 3 Groups prediction When user choose 'outdoor-fitness' as topic
+```{r}
+#9 outdoor-fitness -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 10. Top 3 Groups prediction When user choose 'outdoor-adventures' as topic
+```{r}
+#10 outdoor-adventures -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 11. Top 3 Groups prediction When user choose 'social-dancing' as topic
+```{r}
+#11 social-dancing -> dance-lessons
+gt_c1 %>% filter(topic_key == 'dance-lessons') %>% select(group_id) -> dance_lessons
+
+dance_lessons1 = inner_join(group_c1, dance_lessons) 
+
+
+dance_lessons1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> dance_lessons_ny
+
+dance_lessons1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> dance_lessons_il
+
+dance_lessons1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> dance_lessons_ca
+
+dance_lessons_ny
+dance_lessons_il
+dance_lessons_ca
+```
+
+# 12. Top 3 Groups prediction When user choose 'dance-lessons' as topic
+```{r}
+#12 dance-lessons -> social-dancing
+gt_c1 %>% filter(topic_key == 'social-dancing') %>% select(group_id) -> social_dancing
+
+social_dancing1 = inner_join(group_c1, social_dancing) 
+
+
+social_dancing1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> social_dancing_ny
+
+social_dancing1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> social_dancing_il
+
+social_dancing1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> social_dancing_ca
+
+social_dancing_ny
+social_dancing_il
+social_dancing_ca
+```
+
+# 13. Top 3 Groups prediction When user choose 'sports' as topic
+```{r}
+#13 sports -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+
+```
+
+# 14. Top 3 Groups prediction When user choose 'performing-arts' as topic
+```{r}
+#14 performing-arts -> art
+gt_c1 %>% filter(topic_key == 'art') %>% select(group_id) -> art
+
+art1 = inner_join(group_c1, art) 
+
+
+art1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> art_ny
+
+art1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> art_il
+
+art1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> art_ca
+
+art_ny
+art_il
+art_ca
+```
+
+# 15. Top 3 Groups prediction When user choose 'mobile-technology & technology' as topic
+```{r}
+#15 mobile-technology,technology - > newtech
+newtech_ny
+newtech_il
+newtech_ca
+```
+
+# 16. Top 3 Groups prediction When user choose 'newtech & technology' as topic
+```{r}
+#16 newtech,technology -> mobile-technology
+gt_c1 %>% filter(topic_key == 'mobile-technology') %>% select(group_id) -> mobile_technology
+
+mobile_technology1 = inner_join(group_c1, mobile_technology) 
+
+
+mobile_technology1 %>% 
+  filter(state=='NY') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> mobile_technology_ny
+
+mobile_technology1 %>% 
+  filter(state=='IL') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> mobile_technology_il
+
+mobile_technology1 %>% 
+  filter(state=='CA') %>% 
+  filter(rating  > 4.8) %>% 
+  arrange(desc(members)) %>% 
+  select(group_name, members) %>% 
+  head(3) -> mobile_technology_ca
+
+mobile_technology_ny
+mobile_technology_il
+mobile_technology_ca
+```
+
+# 17. Top 3 Groups prediction When user choose 'sports & wellness ' as topic
+```{r}
+#17 sports,wellness -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 18. Top 3 Groups prediction When user choose 'music & sports' as topic
+```{r}
+#18 music,sports -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 19. Top 3 Groups prediction When user choose 'art & sports' as topic
+```{r}
+#19 art,sports -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 20. Top 3 Groups prediction When user choose 'music & performing-arts' as topic
+```{r}
+#20 music,performing-arts -> art
+art_ny
+art_il
+art_ca
+```
+
+# 21. Top 3 Groups prediction When user choose 'movies & performing-arts' as topic
+```{r}
+#21 movies,performing-arts -> art
+art_ny
+art_il
+art_ca
+```
+
+# 22. Top 3 Groups prediction When user choose 'outdoors & performing-arts' as topic
+```{r}
+#22 outdoors,performing-arts -> art
+art_ny
+art_il
+art_ca
+```
+
+# 23. Top 3 Groups prediction When user choose 'movies & wine' as topic
+```{r}
+#23 movies, wine -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 24. Top 3 Groups prediction When user choose 'art & wine' as topic
+```{r}
+#24 art,wine -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 25. Top 3 Groups prediction When user choose 'movies & music' as topic
+```{r}
+#25 movies, music -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 26. Top 3 Groups prediction When user choose 'art & music' as topic
+```{r}
+#26 art, music -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+
+# 27. Top 3 Groups prediction When user choose 'art & movies' as topic
+```{r}
+#27 art, movies -> outdoors
+outdoors_ny
+outdoors_il
+outdoors_ca
+```
+

@@ -1,0 +1,787 @@
+---
+title: "Topic Association Rule"
+author: "Youngjoon Kim"
+date: "4/29/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 1. set up environment
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(arules)
+library(arulesViz)
+library(ggplot2)
+```
+
+### 2. create assoicialtion rule
+
+```{r}
+mt_df = as.data.frame(mt_c1)
+mt_list = split(mt_df[,"topic_name"], mt_df[,"member_id"])  ## puts into a list
+set.seed(123)
+train_index3 <- sample(1:length(mt_list), length(mt_list)*0.7)
+
+train3 <- mt_list[train_index3] # 70%
+test3 <- mt_list[-train_index3] # 30%
+train_tr3 = as(train3, "transactions")
+train_rule3 <- apriori(train_tr3, 
+                 parameter = list(supp = 0.003, 
+                                  conf = 0.2, 
+                                  minlen = 2,
+                                  target = "rules"))
+```
+
+### 3. Interactive Plot(R-shiny)
+
+```{r}
+#ruleExplorer(train_rule3) #uncomment if you want to see Rshiny visualiazation
+```
+
+### 4. Prediction Accuracy in Topic recommendation system
+
+```{r}
+#1. social media  -> new tech
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('social-media' %in% test3[[i]]) & ('newtech' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('social-media' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+tprule1 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#2.technology -> newtech
+
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('technology' %in% test3[[i]]) & ('newtech' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('technology' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule2 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+
+#3 recreational-sports -> sports
+
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('recreational-sports' %in% test3[[i]]) & ('sports' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('recreational-sports' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule3 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#4 recreational-sports -> outdoors
+
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('recreational-sports' %in% test3[[i]]) & ('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('recreational-sports' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule4 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#5 culture-exchange -> language
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('culture-exchange' %in% test3[[i]]) & ('language' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('culture-exchange' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule5 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+
+#6 mobile-technology -> newtech
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('mobile-technology' %in% test3[[i]]) & ('newtech' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('mobile-technology' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule6 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#7 digcam -> photo
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('digcam' %in% test3[[i]]) & ('photo' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('digcam' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule7 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#8 web -> newtech
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('web' %in% test3[[i]]) & ('newtech' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('web' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule8 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#9 outdoor-fitness -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('outdoor-fitness' %in% test3[[i]]) & ('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('outdoor-fitness' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule9 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#10 outdoor-adventures -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('outdoor-adventures' %in% test3[[i]]) & ('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('outdoor-adventures' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule10 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#11 social-dancing -> dance-lessons
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('social-dancing' %in% test3[[i]]) & ('dance-lessons' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('social-dancing' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule11 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#12 dance-lessons -> social-dancing
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('dance-lessons' %in% test3[[i]]) & ('social-dancing' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('dance-lessons' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule12 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#13 sports -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('sports' %in% test3[[i]]) & ('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('sports' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule13 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#14 performing-arts -> art
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('performing-arts' %in% test3[[i]]) & ('art' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('performing-arts' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule14 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#15 mobile-technology,technology - > newtech
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('mobile-technology' %in% test3[[i]]) & ('technology' %in% test3[[i]]) &('newtech' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('mobile-technology' %in% test3[[i]]) & ('technology' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule15 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#16 newtech,technology -> mobile-technology
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('newtech' %in% test3[[i]]) & ('technology' %in% test3[[i]]) &('mobile-technology' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('newtech' %in% test3[[i]]) & ('technology' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+
+tprule16 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#17 sports,wellness -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('sports' %in% test3[[i]]) & ('wellness' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('sports' %in% test3[[i]]) & ('wellness' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule17 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#18 music,sports -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('music' %in% test3[[i]]) & ('sports' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('music' %in% test3[[i]]) & ('sports' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule18 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#19 art,sports -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('sports' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('sports' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule19 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#20 music,performing-arts -> art
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('music' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]) &('art' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('music' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule20 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#21 movies,performing-arts -> art
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]) &('art' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule21 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#22 outdoors,performing-arts -> art
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('outdoors' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]) &('art' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('outdoors' %in% test3[[i]]) & ('performing-arts' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule22 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#23 movies, wine -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('wine' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('wine' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule23 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#24 art,wine -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('wine' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('wine' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule24 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#25 movies, music -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('music' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('movies' %in% test3[[i]]) & ('music' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule25 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#26 art, music -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('music' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('music' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule26 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+#27 art, movies -> outdoors
+mtlist_both = list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('movies' %in% test3[[i]]) &('outdoors' %in% test3[[i]]))
+    mtlist_both <- c(i, mtlist_both)
+  
+}
+
+mtlist_either= list()
+for (i in 1:length(test3)) {
+  if(('art' %in% test3[[i]]) & ('movies' %in% test3[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+
+tprule27 = length(mtlist_both)/length(mtlist_either)*100  ## accuracy
+
+
+avg_pred_accuracy1 = (tprule1+tprule2+tprule3+tprule4+tprule5+tprule6+tprule7+tprule8+tprule9+tprule10+tprule11+tprule12+tprule13+tprule14+tprule15+tprule16+tprule17+tprule18+tprule19+tprule20+tprule21+tprule22+tprule23+tprule24+tprule25+tprule26+tprule27)/27
+
+avg_pred_accuracy1   #61.94887 %
+```
+
+
+
+#### 5. Prediction accuracy baseline from Top 3 popular topics 
+```{r}
+### Train 
+user_tr = as.numeric(names(train3))
+
+mt_c1 %>% filter(member_id %in% user_tr) -> train1
+
+train1 %>% 
+  group_by(topic_name) %>% 
+  mutate(count=n()) %>% 
+  select(topic_name, count) %>% 
+  arrange(desc(count)) %>% 
+  unique() %>% 
+  arrange(desc(count))-> lst_train
+
+
+lst_train
+
+
+### Test
+user_tst = as.numeric(names(test3))
+mt_c1 %>% filter(member_id %in% user_tst) -> test1
+
+
+list_grpmm = split(test1[,"topic_name"], test1[,"member_id"])  ## puts into a list
+
+
+### Recommend top 3 popular topics to users in test data set
+mtlist_either= list()
+for (i in 1:length(list_grpmm)) {
+  if(('outdoors' %in% list_grpmm[[i]]) | ('newtech' %in% list_grpmm[[i]]) |('art' %in% list_grpmm[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+tp_baseline = length(mtlist_either)/length(list_grpmm)*100  ## accuracy
+tp_baseline # 5.68 %
+
+```
+
+#### 6. Avg. Prediction accuracy baseline from Top 3 popular groups in 3 states.
+
+```{r}
+user_tr = as.numeric(names(train3))
+
+member_c1 %>% filter(member_id %in% user_tr) -> train1
+
+train1 %>% 
+  group_by(group_id) %>% 
+  mutate(count=n()) %>% 
+  select(group_id, count) %>% 
+  arrange(desc(count)) %>% 
+  unique() %>% 
+  arrange(desc(count))-> lst_train
+
+group_train = inner_join(lst_train, group_c1)
+
+group_train %>% 
+  filter(rating>4.8) %>% 
+  arrange(desc(count)) %>% 
+  select(group_id, group_name, count, state, members)->group_train1
+
+tr_ny = group_train1 %>% filter(state=="NY") %>% arrange(desc(count))
+tr_il = group_train1 %>% filter(state=="IL") %>% arrange(desc(count))
+tr_ca = group_train1 %>% filter(state=="CA") %>% arrange(desc(count))
+
+```
+
+#### 6-1. Prediction(baseline) in NY
+```{r}
+# lst_ny
+user_tst = as.numeric(names(test3))
+member_c1 %>% filter(member_id %in% user_tst) %>% filter(state=='NY') -> test1
+
+
+mm = test1 %>% select(member_id, member_name, group_id) 
+gr = group_c1 %>% select(group_id, group_name)
+
+mmgr = inner_join(mm, gr)
+
+
+grpmm = mmgr 
+grpmm = as.data.frame(grpmm)
+list_grpmm = split(grpmm[,"group_name"], grpmm[,"member_name"])
+
+# ny
+mtlist_either= list()
+for (i in 1:length(list_grpmm)) {
+  if(('Hudson Valley Hikers' %in% list_grpmm[[i]]) | ('FREE or inexpensive things to do in New York City' %in% list_grpmm[[i]]) |('The New York City Social Group (15,000+ members!)' %in% list_grpmm[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+tprule_ny = length(mtlist_either)/length(list_grpmm)*100   ## accuracy
+tprule_ny  # 7.522966%
+
+```
+
+
+#### 6-2. Prediction(baseline) in IL
+```{r}
+user_tst = as.numeric(names(test3))
+member_c1 %>% filter(member_id %in% user_tst) %>% filter(state=='IL') -> test1
+
+
+mm = test1 %>% select(member_id, member_name, group_id) 
+gr = group_c1 %>% select(group_id, group_name)
+
+mmgr = inner_join(mm, gr)
+
+
+grpmm = mmgr 
+grpmm = as.data.frame(grpmm)
+list_grpmm = split(grpmm[,"group_name"], grpmm[,"member_name"])
+
+mtlist_either= list()
+for (i in 1:length(list_grpmm)) {
+  if(('Chicago Hiking, Outdoors, & Social Group' %in% list_grpmm[[i]]) | ('Meet People (And Friends) Chicago' %in% list_grpmm[[i]]) |('New Bar Meet Friends Every Two Weeks for 20s - 30s (Chicago)' %in% list_grpmm[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+tprule_il = length(mtlist_either)/length(list_grpmm)*100   ## accuracy
+tprule_il  # 13.39959%
+
+```
+
+#### 6-3. Prediction(baseline) in CA
+```{r}
+user_tst = as.numeric(names(test3))
+member_c1 %>% filter(member_id %in% user_tst) %>% filter(state=='CA') -> test1
+
+
+mm = test1 %>% select(member_id, member_name, group_id) 
+gr = group_c1 %>% select(group_id, group_name)
+
+mmgr = inner_join(mm, gr)
+
+
+grpmm = mmgr 
+grpmm = as.data.frame(grpmm)
+list_grpmm = split(grpmm[,"group_name"], grpmm[,"member_name"])
+
+mtlist_either= list()
+for (i in 1:length(list_grpmm)) {
+  if(('Urban Hiking & Happy Hour (& random urban adventures)' %in% list_grpmm[[i]]) | ('San Francisco Foodies' %in% list_grpmm[[i]]) |('Girl Develop It San Francisco' %in% list_grpmm[[i]]))
+    mtlist_either <- c(i, mtlist_either)
+  
+}
+
+
+tprule_ca = length(mtlist_either)/length(list_grpmm)*100  ## accuracy
+tprule_ca # 8.195722%
+
+```
+
+#### 6-4. Average prediction accuracy
+```{r}
+mean(tprule_ny,tprule_il,tprule_ca)  #7.522966 %
+```
+
+
