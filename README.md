@@ -13,7 +13,7 @@
 	1. Dashboard (Exploratory Data Analysis) :   https://public.tableau.com/profile/mandi7631#!/
 	2. Poster: https://drive.google.com/a/bu.edu/file/d/1wmYQ65fSYtPRrpSKq-4xa_DR5ggCDx-W/view?usp=sharing
 	3. Slide: https://docs.google.com/presentation/d/1NeErr9ZekAddFQW-l8YtMaCzFw8-NYIhaVQjQvpdQaA/edit?usp=sharing
-	4. Written paper: https://drive.google.com/a/bu.edu/file/d/1wmYQ65fSYtPRrpSKq-4xa_DR5ggCDx-W/view?usp=sharing
+	4. Written paper: https://docs.google.com/document/d/1HGxGdTWktbdz0nr02ShExLOYFRrqnSXfHXo9u9BEE9c/edit?usp=sharing
 	
 
 
