@@ -32,7 +32,7 @@ group_category$location <- ifelse(group_category$category.shortname == 'tech', '
 ```{r}
 kable(group_category)
 ```
-As you can see the chart above, different groups with different categories have the same longitude and latitude since Meetup protect the user's privacy. Therefore, the are some overlap point when we make the map of distribution of groups.
+As you can see the chart above, different groups with different categories have the same longitude and latitude since Meetup protect the user's privacy. Therefore, there are some overlap point when we make the map of distribution of groups.
 
 # Creating the map with leaflet
 ```{r}
